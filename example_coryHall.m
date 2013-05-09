@@ -2,6 +2,8 @@
 % Example of the sliding EEMD
 %%
 
+% TODO: change it to use ensemble EMD
+
 %% Input data
 data = load('test/CoryHall_main_xfmr_AF_Total_.dat');
 data = data(:,2);
