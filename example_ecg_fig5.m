@@ -3,7 +3,7 @@
 %%
 
 %% Input data
-load('test/ecg');
+load('data/ecg');
 x=ecg;
 
 % x=x(:)';
