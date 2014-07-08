@@ -45,7 +45,20 @@ Q2 = 1/length(sampErr)*sum((comp2(sampErr)-imf(2,sampErr)).^2);
 Q3 = 1/length(sampErr)*sum((comp3(sampErr)-imf(3,sampErr)).^2);
 Q4 = 1/length(sampErr)*sum((trend(sampErr)-imf(4,sampErr)).^2);
 
+errEMD1 = (comp1(sampErr)-imf(1,sampErr)).^2;
+errEMD2 = (comp2(sampErr)-imf(2,sampErr)).^2;
+errEMD3 = (comp3(sampErr)-imf(3,sampErr)).^2;
+    
+
 mse_rilling = Q1+Q2+Q3+Q4;
+
+%%%% From corwin:
+%% imf = emd_local(x);
+%%% make sure we have only 3 IMFs and one residual
+%%if size(imf,1) > 4
+%%       imf(4,:) = sum(imf(4:end,:));
+%%     end
+
 
 % imf = emdc_fix([],x,5,3);
 % Q1 = 1/length(sampErr)*sum((comp1(sampErr)-imf(1,sampErr)).^2);
@@ -56,7 +69,7 @@ mse_rilling = Q1+Q2+Q3+Q4;
 % mse_local = Q1+Q2+Q3+Q4;
 
 
-%% EMD online with Rilling stopping criteria
+%% EMD online with Rilling stopping criterion
 run = 1;
 for nbExtrema = nbExtremaList
     % Initialization
@@ -72,7 +85,13 @@ for nbExtrema = nbExtremaList
     Q4 = 1/length(sampErr)*sum((trend(sampErr)-stage(4).data(sampErr)).^2);
 
     mse0(run) = Q1+Q2+Q3+Q4;
-
+    
+    if nbExtrema == 12
+        errOEMD1 = (comp1(sampErr)-stage(1).imf(sampErr)).^2;
+        errOEMD2 = (comp2(sampErr)-stage(2).imf(sampErr)).^2;
+        errOEMD3 = (comp3(sampErr)-stage(3).imf(sampErr)).^2;
+    end
+    
     run = run+1;
 
 end
@@ -98,7 +117,7 @@ for nbExtrema = nbExtremaList
 
 end
 
-%% EMD online with central limit stopping criteria
+%% EMD online with central limit stopping criterion
 run = 1;
 for nbExtrema = nbExtremaList
     % Initialization
@@ -128,10 +147,11 @@ line([nbExtremaList(1)  nbExtremaList(end)],[mse_emd mse_emd],'color',[.5,.5,.5]
 plot(nbExtremaList,mse0,'-r*','LineWidth',2,'MarkerSize',9);
 plot(nbExtremaList,mse2,'-bo','LineWidth',2,'MarkerSize',9);
 plot(nbExtremaList,mse1,'-k+','LineWidth',2,'MarkerSize',9);
-legend('EMD (Rilling  stop. criteria)','EMD (conf. limit stop. criteria)', 'Online EMD (Rilling  stop. criteria)', 'Online EMD (conf. limit stop. criteria)', 'Online EMD (10 siftings)','Location','SouthEast');
+legend('EMD (Rilling  stop. criterion)','EMD (conf. limit stop. criterion)', 'Online EMD (Rilling  stop. criterion)', 'Online EMD (conf. limit stop. criterion)', 'Online EMD (10 siftings)','Location','SouthEast');
 xlabel('Window Size (nb. extrema)','FontSize',12);
 ylabel('Mean Squared Error','FontSize',12);
 set(gca,'FontSize',12);
 axis auto
 
+print('figure_mse.eps','-depsc');
 

@@ -50,17 +50,19 @@ for j =1:nbTrial
 end
 
 %%
-sampleSize = begin+step:step:begin+step+len;
+sampleSize = begin+step:step:begin+len;
 figure;
 % plot(sampleSize,execTime(1,:),'-b+','LineWidth',2,'MarkerSize',9);
-errorbar(sampleSize,mean(execTimeRill(:,:)),std(execTimeRill(:,:)),'-.k*','LineWidth',2,'MarkerSize',6);
+% errorbar(sampleSize,mean(execTimeRill(1:end-1,1:end-1)),std(execTimeRill(1:end-1,1:end-1)),'-.kd','LineWidth',2,'MarkerSize',6);
+semilogy(sampleSize,mean(execTimeRill(1:end-1,1:end-1)),'-.kd','LineWidth',2,'MarkerSize',6);
 hold on;
-errorbar(sampleSize,mean(execTimeOEMD(:,:)),std(execTimeOEMD(:,:)),'-r+','LineWidth',2,'MarkerSize',6);
+% errorbar(sampleSize,mean(execTimeOEMD(1:end-1,1:end-1)),std(execTimeOEMD(1:end-1,1:end-1)),'-r+','LineWidth',2,'MarkerSize',6);
+semilogy(sampleSize,mean(execTimeOEMD(1:end-1,1:end-1)),'-r+','LineWidth',2,'MarkerSize',6);
 legend('EMD (Rilling et al.)','Online EMD (10 siftings)','Location','NorthWest');
 xlabel('Number of samples','FontSize',12);
 ylabel('Execution Time (seconds)','FontSize',12);
 set(gca,'FontSize',12);
-axis([sampleSize(1) sampleSize(end)+step 0 450])
+axis([sampleSize(1) sampleSize(end)+step 0 600])
 
 
 %     start = cputime;

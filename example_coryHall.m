@@ -5,7 +5,7 @@
 %% Input data
 data = load('test/CoryHall_main_xfmr_AF_Total_.dat');
 data = data(:,2);
-x= data(57000:116000)';
+x= data(57000:66000)';
 
 %% Parameters
 nbExtrema = 12;  % Size of the sliding window (number of extrema per window) (must be higher than 10)
@@ -16,7 +16,7 @@ noiseLevel = 0.0;
 nbRealisation = 1;  
 
 %% Initialization
-stage = oceemdan_init(noiseLevel, nbRealisation, length(x),1); %Initializate data structures
+stage = oceemdan_init(noiseLevel, nbRealisation, length(x),0); %Initializate data structures
 
 %% Execution
 figure;

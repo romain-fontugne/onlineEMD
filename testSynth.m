@@ -5,7 +5,7 @@ execTime = zeros(3,length(rangeTest));
 nbIMF = zeros(3,length(rangeTest));
 
 %% Parameters for Online EMD
-nbExtrema = 11;  % Size of the sliding window (number of extrema per window) (must be higher than 6?)
+nbExtrema = 11;  % Size of the sliding window (number of extrema per window) (must be higher than 10)
 
 
 % computational time benchmark
@@ -29,7 +29,7 @@ for i = rangeTest
     %% OnlineEMD
     
     start = cputime;
-    stage = oceemdan_init(0, 1, length(x)); %Initializate data structures
+    stage = oceemdan_init(0, 1, length(x),1); %Initializate data structures
     stage(1).data = x; %add new samples to the stream   
     stage = oceemdan_iter(stage, nbExtrema, -1); %iterate
     execTime(3,run) = cputime-start;

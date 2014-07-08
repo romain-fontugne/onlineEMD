@@ -16,6 +16,8 @@ if maxIMF==0 || (length(extrInd) < nbExtrema) %Not enough extrema to extract IMF
     return
 end
 
+%[stop_sift,moyenne,s] = stop_sifting(stream(1).data(stream(1).windowTail:end),[1:max(size(stream(1).data(stream(1).windowTail:end)))],0.05,0.5,0.05,'spline',0,4);
+
 while length(extrInd) >= nbExtrema %Enough data to compute the corresponding IMFs
     
     if stream(1).windowTail ~= 1 && extrInd(1) ~= stream(1).windowTail+1  %needed to fix issues with extr function
@@ -23,40 +25,25 @@ while length(extrInd) >= nbExtrema %Enough data to compute the corresponding IMF
     end
     
     newWindowHead=extrInd(nbExtrema);
-        
     
-    if stream(1).nbRealisation > 1
-        % Empirical EMD
-        acumIMF=zeros(1,2+(newWindowHead-stream(1).windowTail));
-        for i=1:size(stream(1).noise,1)
-            %TODO check if there is enough modes in the noise (see ceemdan line 79)
-            % Add noise to the signal 
-%             [temp]=emdc([],stream(1).data(stream(1).windowTail:newWindowHead+1)+(std(stream(1).data(stream(1).windowTail:newWindowHead+1))*stream(1).noise{i}(stream(1).windowTail:newWindowHead+1)),[],1);
-            temp=emd(stream(1).data(stream(1).windowTail:newWindowHead+1)+(std(stream(1).data(stream(1).windowTail:newWindowHead+1))*stream(1).noise{i}(stream(1).windowTail:newWindowHead+1)),'MAXMODES',1);
-            temp=temp(1,:)/size(stream(1).noise,1);
-            acumIMF=acumIMF+temp;
-
-        end
-    else
-        % No noise to add
-
-        switch stream(1).emdAlgo
-            case 0
-                % Rilling stopping criteria (C code)
-                [acumIMF]=emdc([],stream(1).data(stream(1).windowTail:newWindowHead+1),[],1);            
-            case 1
-                % Fix: 10 Siftings (C code)
-                [acumIMF]=emdc_fix([],stream(1).data(stream(1).windowTail:newWindowHead+1),10,1);
-            case 2
-                % Confidence limit stopping criteria (Matlab code)
-                [acumIMF] = emd(stream(1).data(stream(1).windowTail:newWindowHead+1),'MAXMODES',1,'FIX_H',4);
-            otherwise
-                error('EMD function unknown')
+    switch stream(1).emdAlgo
+        case 0
+            % Rilling stopping criteria (C code)
+            [acumIMF]=emdc([],stream(1).data(stream(1).windowTail:newWindowHead+1),[],1);            
+        case 1
+            % Fix: 10 Siftings (C code)
+            [acumIMF]=emdc_fix([],stream(1).data(stream(1).windowTail:newWindowHead+1),10,1);
+        case 2
+            % Confidence limit stopping criteria (Matlab code)
+            [acumIMF] = emd(stream(1).data(stream(1).windowTail:newWindowHead+1),'MAXMODES',1,'FIX_H',4);
+%             [acumIMF] = emd(stream(1).data(stream(1).windowTail:newWindowHead+1),'MAXMODES',1,'STOP',[0.05,0.5,0.05]);
+        otherwise
+            error('EMD function unknown')
 %         [acumIMF]=emd(stream(1).data(stream(1).windowTail:newWindowHead+1),'MAXMODES',1);
 %          [acumIMF]=emd(stream(1).data(stream(1).windowTail:newWindowHead+1),'MAXMODES',1,'FIX',5);
 %             
-        end
     end
+
     %Store the computed mean IMF
     prevWindowHead = stream(1).windowHead;
 %     sigma = 1;%((nbExtrema-1)/6)-(1/3);
@@ -71,7 +58,7 @@ while length(extrInd) >= nbExtrema %Enough data to compute the corresponding IMF
         end
         ind = ind.*(bound/((nbExtrema-1)/2));
         ind(1) = -bound;
-        w = 1/(sqrt(2*pi))*exp(-1/2*ind.^2);  % normal distribution with sigma = 1
+        w = (1/(sqrt(2*pi))*exp(-1/2*ind.^2)) - (1/(sqrt(2*pi))*exp(-1/2*bound^2));  % normal distribution with sigma = 1
         weightedIMF = w.*acumIMF(1,2:end-1); 
 
         %Concatenate and sum with the IMF previously computed
@@ -90,7 +77,7 @@ while length(extrInd) >= nbExtrema %Enough data to compute the corresponding IMF
                 lastExtrema = j+1-(nbExtrema+1)/2;
                 indTmp = ((1/dataLength)+(lastExtrema-1):1/dataLength:lastExtrema);
                 indTmp = indTmp.*(bound/((nbExtrema-1)/2));
-                w = w+1/(sqrt(2*pi))*exp(-1/2*indTmp.^2);
+                w = w+(1/(sqrt(2*pi))*exp(-1/2*indTmp.^2)) - (1/(sqrt(2*pi))*exp(-1/2*bound^2));
             end
             weights(indPart) = w;
         end
@@ -103,6 +90,7 @@ while length(extrInd) >= nbExtrema %Enough data to compute the corresponding IMF
     
     %Store the residual
     nextWindowTail = extrInd(2)-1;
+%     nextWindowTail = extrInd(nbExtrema/2)-1; % Try to move faster the window
     if stream(1).windowTail ~= 1
         residualTail = stream(1).data(stream(1).windowTail+1:nextWindowTail)-stream(1).imf(stream(1).windowTail+1:nextWindowTail);
     else
@@ -119,8 +107,29 @@ while length(extrInd) >= nbExtrema %Enough data to compute the corresponding IMF
     stream(1).windowHead = newWindowHead;
     %Remove the last extrema
     extrInd = extrInd(2:end);
+    
 end
 
 %Recursive call for the next IMF
 % 'recursion'
 stream = [stream(1) oceemdan_iter(stream(2:end), nbExtrema, maxIMF-1)];
+
+end
+
+%-------------------------------------------------------------------------------
+% default stopping criterion
+function [stop,envmoy,s] = stop_sifting(m,t,sd,sd2,tol,INTERP,MODE_COMPLEX,ndirs)
+try
+  [envmoy,nem,nzm,amp] = mean_and_amplitude(m,t,INTERP,MODE_COMPLEX,ndirs);
+  sx = abs(envmoy)./amp;
+  s = mean(sx);
+  stop = ~((mean(sx > sd) > tol | any(sx > sd2)) & (all(nem > 2)));
+  if ~MODE_COMPLEX
+    stop = stop && ~(abs(nzm-nem)>1);
+  end
+catch
+  stop = 1;
+  envmoy = zeros(1,length(m));
+  s = NaN;
+end
+end

@@ -18,7 +18,7 @@ nbMaxIMF = -1;  % Number of IMFs to extract (-1 for unlimited)
 
 % Parameters for executing in an EEMD-fashion
 noiseLevel = 0.2;
-nbRealisation = 500;  
+nbRealisation = 1;  
 
 %% Initialization
 stage = oceemdan_init(noiseLevel, nbRealisation, length(x),1); %Initializate data structures
