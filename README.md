@@ -1,5 +1,4 @@
 # README #
-# * [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)#
 
 
 ### What is this repository for? ###
