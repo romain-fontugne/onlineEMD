@@ -1,4 +1,4 @@
-function [stream] = oceemdan_iter(stream, nbExtrema, maxIMF)
+function [stream] = oemd_iter(stream, nbExtrema, maxIMF)
 %OCEEMDAN_ITER 
 
 bound = 3;
@@ -112,7 +112,7 @@ end
 
 %Recursive call for the next IMF
 % 'recursion'
-stream = [stream(1) oceemdan_iter(stream(2:end), nbExtrema, maxIMF-1)];
+stream = [stream(1) oemd_iter(stream(2:end), nbExtrema, maxIMF-1)];
 
 end
 

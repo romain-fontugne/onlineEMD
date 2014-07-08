@@ -23,7 +23,7 @@ noiseLevel = 0.1;
 nbRealisation = 1;  
 
 %% Initialization
-stage = oceemdan_init(noiseLevel, nbRealisation, length(x),0); %Initializate data structures
+stage = oemd_init(noiseLevel, nbRealisation, length(x),0); %Initializate data structures
 
 %% Execution
 %Simulate data stream
@@ -36,7 +36,7 @@ for i=1:sizeDataPkt:length(x)-sizeDataPkt
    i+sizeDataPkt-1
 
    stage(1).data = [stage(1).data newDataPkt]; %add new samples to the stream   
-   stage = oceemdan_iter(stage, nbExtrema, nbMaxIMF); %iterate
+   stage = oemd_iter(stage, nbExtrema, nbMaxIMF); %iterate
    plotIMFs(stage);
    
    pause

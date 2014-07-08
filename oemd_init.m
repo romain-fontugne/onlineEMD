@@ -1,4 +1,4 @@
-function stage = oceemdan_init(noiseLevel, nbRealisation, noiseLength, emdAlgo)
+function stage = oemd_init(noiseLevel, nbRealisation, noiseLength, emdAlgo)
 
 %TODO set default values
 
