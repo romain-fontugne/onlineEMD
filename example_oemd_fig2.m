@@ -1,8 +1,8 @@
 %%
-% Example of the sliding EEMD
+% Example of Online EMD with synthetic data
 %%
 
-figure()
+figure();
 
 %% Input data
 % Toy signal
@@ -23,16 +23,15 @@ stage = oemd_init(0); %Initializate data structures
 
 %% Execution
 %Simulate data stream
-% figure;
-% 'Press any key to add data'
+'Press any key to add data'
+
 sizeDataPkt = 20;   % arrival rate of the data (This is NOT the window size!)
 for i=1:sizeDataPkt:length(x)-sizeDataPkt
 
    newDataPkt = x(i:i+sizeDataPkt-1);
-   i+sizeDataPkt-1
 
    stage(1).data = [stage(1).data newDataPkt]; %add new samples to the stream   
-   stage = oemd_iter(stage, nbExtrema, nbMaxIMF); %iterate
+   stage = oemd_iter(stage, nbExtrema, nbMaxIMF); % iterate
    plotIMFs(stage);
    
    pause
