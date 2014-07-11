@@ -21,10 +21,6 @@
 nbExtremaList = 10:30;  % Size of the sliding window (number of extrema per window) (must be higher than 6?)
 nbMaxIMF = -1;  % Number of IMFs to extract (-1 for unlimited)
 
-% Parameters for executing in an EEMD-fashion
-noiseLevel = 0.1;
-nbRealisation = 1;  
-
 %% mean squared error 
 sampErr = 2000:7000;
 mse0 = zeros(1,length(nbExtremaList));
