@@ -73,7 +73,7 @@ mse_rilling = Q1+Q2+Q3+Q4;
 run = 1;
 for nbExtrema = nbExtremaList
     % Initialization
-    stage = oemd_init(noiseLevel, nbRealisation, 0, 0); %Initializate data structures
+    stage = oemd_init(0); %Initializate data structures
 
     % Execution
     stage(1).data = x;
@@ -100,7 +100,7 @@ end
 run = 1;
 for nbExtrema = nbExtremaList
     % Initialization
-    stage = oemd_init(noiseLevel, nbRealisation, 0, 1); %Initializate data structures
+    stage = oemd_init(1); %Initializate data structures
 
     % Execution
     stage(1).data = x;
@@ -121,7 +121,7 @@ end
 run = 1;
 for nbExtrema = nbExtremaList
     % Initialization
-    stage = oemd_init(noiseLevel, nbRealisation, 0, 2); %Initializate data structures
+    stage = oemd_init(2); %Initializate data structures
 
     % Execution
     stage(1).data = x;

@@ -16,12 +16,8 @@ x=ecg;
 nbExtrema = 10;  % Size of the sliding window (number of extrema per window) (must be higher than 10)
 nbMaxIMF = -1;  % Number of IMFs to extract (-1 for unlimited)
 
-% Parameters for executing in an EEMD-fashion
-noiseLevel = 0.2;
-nbRealisation = 1;  
-
 %% Initialization
-stage = oemd_init(noiseLevel, nbRealisation, length(x),1); %Initializate data structures
+stage = oemd_init(1); %Initializate data structures
 
 %% Execution
 figure;

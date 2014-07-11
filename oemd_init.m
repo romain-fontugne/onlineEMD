@@ -1,7 +1,9 @@
-function stage = oemd_init(noiseLevel, nbRealisation, noiseLength, emdAlgo)
+function stage = oemd_init(emdAlgo)
 
 %TODO set default values
 
+
+nbRealisation = 0;
 %Initialize the noise
 if nbRealisation > 1
     for i=1:nbRealisation
@@ -30,7 +32,7 @@ if nbRealisation > 1
     end
     
 else
-   stage = struct('data',[],'imf',[],'windowTail',1,'windowHead',1,'noise',{0}, 'nbRealisation', nbRealisation, 'weights', [], 'emdAlgo', emdAlgo); 
+   stage = struct('data',[],'imf',[],'windowTail',1,'windowHead',1, 'weights', [], 'emdAlgo', emdAlgo);
     
 end
 

@@ -40,13 +40,9 @@ for emdFct = 1:2
             if signal == 2
                 nbMaxIMF = 1;
             end
-            
-            % Parameters for executing in an EEMD-fashion
-            noiseLevel = 0.;
-            nbRealisation = 1;  
 
             % Initialization
-            stage = oemd_init(noiseLevel, nbRealisation, length(x),0); %Initializate data structures
+            stage = oemd_init(0); %Initializate data structures
         
         else
             nbMaxIMF=0;

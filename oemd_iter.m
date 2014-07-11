@@ -98,7 +98,7 @@ while length(extrInd) >= nbExtrema %Enough data to compute the corresponding IMF
     end
         
     if size(stream,2)<2    % If we went through all the noise IMF we stop adding noise
-        stream(2)=struct('data',[],'imf',[],'windowTail',1,'windowHead',1,'noise',{0}, 'nbRealisation', stream(1).nbRealisation, 'weights', [], 'emdAlgo', stream(1).emdAlgo);
+        stream(2)=struct('data',[],'imf',[],'windowTail',1,'windowHead',1, 'weights', [], 'emdAlgo', stream(1).emdAlgo);
     end
     stream(2).data(end+1:end+length(residualTail)) = residualTail;
     
