@@ -117,21 +117,3 @@ end
 stream = [stream(1) oemd_iter(stream(2:end))];
 
 end
-
-%-------------------------------------------------------------------------------
-% default stopping criterion
-function [stop,envmoy,s] = stop_sifting(m,t,sd,sd2,tol,INTERP,MODE_COMPLEX,ndirs)
-try
-  [envmoy,nem,nzm,amp] = mean_and_amplitude(m,t,INTERP,MODE_COMPLEX,ndirs);
-  sx = abs(envmoy)./amp;
-  s = mean(sx);
-  stop = ~((mean(sx > sd) > tol | any(sx > sd2)) & (all(nem > 2)));
-  if ~MODE_COMPLEX
-    stop = stop && ~(abs(nzm-nem)>1);
-  end
-catch
-  stop = 1;
-  envmoy = zeros(1,length(m));
-  s = NaN;
-end
-end
