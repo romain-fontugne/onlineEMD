@@ -1,4 +1,4 @@
-function stage = oemd_init(emdAlgo)
+function stage = oemd_init(maxIMF,nbExtrema,emdAlgo)
 
 %TODO set default values
 
@@ -9,7 +9,7 @@ function stage = oemd_init(emdAlgo)
 %  2 means confidence limit stopping criteria, S=4 (Matlab code)
 
 
-stage = struct('data',[],'imf',[],'windowTail',1,'windowHead',1, 'weights', [], 'emdAlgo', emdAlgo);
-    
+stage = struct('data',[],'imf',[],'windowTail',1,'windowHead',1, 'weights', [], 'emdAlgo', emdAlgo,'nbExtrema', nbExtrema,'maxIMF',maxIMF);
+
 end
 

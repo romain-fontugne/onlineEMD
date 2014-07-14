@@ -19,7 +19,7 @@ nbExtrema = 10;  % Size of the sliding window (number of extrema per window) (mu
 nbMaxIMF = -1;  % Number of IMFs to extract (-1 for unlimited)
 
 %% Initialization
-stage = oemd_init(0); %Initializate data structures
+stage = oemd_init(nbMaxIMF,nbExtrema,0); %Initializate data structures
 
 %% Execution
 %Simulate data stream
@@ -31,7 +31,7 @@ for i=1:sizeDataPkt:length(x)-sizeDataPkt
    newDataPkt = x(i:i+sizeDataPkt-1);
 
    stage(1).data = [stage(1).data newDataPkt]; %add new samples to the stream   
-   stage = oemd_iter(stage, nbExtrema, nbMaxIMF); % iterate
+   stage = oemd_iter(stage); % iterate
    plotIMFs(stage);
    
    pause

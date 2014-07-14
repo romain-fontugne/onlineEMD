@@ -1,7 +1,9 @@
-function [stream] = oemd_iter(stream, nbExtrema, maxIMF)
+function [stream] = oemd_iter(stream)
 %OCEEMDAN_ITER 
 
 bound = 3;
+nbExtrema = stream(1).nbExtrema;
+maxIMF = stream(1).maxIMF;
 
 if(nargin==2)
     maxIMF = -1;
@@ -98,7 +100,7 @@ while length(extrInd) >= nbExtrema %Enough data to compute the corresponding IMF
     end
         
     if size(stream,2)<2    % If we went through all the noise IMF we stop adding noise
-        stream(2)=struct('data',[],'imf',[],'windowTail',1,'windowHead',1, 'weights', [], 'emdAlgo', stream(1).emdAlgo);
+        stream(2)=struct('data',[],'imf',[],'windowTail',1,'windowHead',1, 'weights', [], 'emdAlgo', stream(1).emdAlgo,'nbExtrema', stream(1).nbExtrema,'maxIMF',stream(1).maxIMF-1);
     end
     stream(2).data(end+1:end+length(residualTail)) = residualTail;
     
@@ -112,7 +114,7 @@ end
 
 %Recursive call for the next IMF
 % 'recursion'
-stream = [stream(1) oemd_iter(stream(2:end), nbExtrema, maxIMF-1)];
+stream = [stream(1) oemd_iter(stream(2:end))];
 
 end
 

@@ -1,5 +1,8 @@
 %%
-% Example of the sliding EEMD
+% Example of Online EMD with two long signals: a sinusoid and white noise
+%
+% Note that the maximum number of sifting in emdc.c must be increased
+% to analyze such long signals.
 %%
 
 clear all; close all; clc;
@@ -42,7 +45,7 @@ for emdFct = 1:2
             end
 
             % Initialization
-            stage = oemd_init(0); %Initializate data structures
+            stage = oemd_init(nbMaxIMF,nbExtrema,0); %Initializate data structures
         
         else
             nbMaxIMF=0;
@@ -58,7 +61,7 @@ for emdFct = 1:2
             t = cputime; 
             if emdFct == 1
                 stage(1).data = [stage(1).data x(1+(i-1)*step:i*step)]; %add new samples to the stream   
-                stage = oemd_iter(stage, nbExtrema, nbMaxIMF); %iterate
+                stage = oemd_iter(stage); %iterate
 
             else
                 % for the classical EMD we look at each execution time

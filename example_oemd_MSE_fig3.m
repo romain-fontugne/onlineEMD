@@ -1,5 +1,5 @@
 %%
-% Example of the sliding EEMD
+% Plot the mean squared error of Online EMD
 %%
 
 
@@ -69,11 +69,11 @@ mse_rilling = Q1+Q2+Q3+Q4;
 run = 1;
 for nbExtrema = nbExtremaList
     % Initialization
-    stage = oemd_init(0); %Initializate data structures
+    stage = oemd_init(nbMaxIMF,nbExtrema,0); %Initializate data structures
 
     % Execution
     stage(1).data = x;
-    stage = oemd_iter(stage, nbExtrema, nbMaxIMF); %iterate
+    stage = oemd_iter(stage); %iterate
 
     Q1 = 1/length(sampErr)*sum((comp1(sampErr)-stage(1).imf(sampErr)).^2);
     Q2 = 1/length(sampErr)*sum((comp2(sampErr)-stage(2).imf(sampErr)).^2);
@@ -96,11 +96,11 @@ end
 run = 1;
 for nbExtrema = nbExtremaList
     % Initialization
-    stage = oemd_init(1); %Initializate data structures
+    stage = oemd_init(nbMaxIMF,nbExtrema,1); %Initializate data structures
 
     % Execution
     stage(1).data = x;
-    stage = oemd_iter(stage, nbExtrema, nbMaxIMF); %iterate
+    stage = oemd_iter(stage); %iterate
 
     Q1 = 1/length(sampErr)*sum((comp1(sampErr)-stage(1).imf(sampErr)).^2);
     Q2 = 1/length(sampErr)*sum((comp2(sampErr)-stage(2).imf(sampErr)).^2);
@@ -117,11 +117,11 @@ end
 run = 1;
 for nbExtrema = nbExtremaList
     % Initialization
-    stage = oemd_init(2); %Initializate data structures
+    stage = oemd_init(nbMaxIMF,nbExtrema,2); %Initializate data structures
 
     % Execution
     stage(1).data = x;
-    stage = oemd_iter(stage, nbExtrema, nbMaxIMF); %iterate
+    stage = oemd_iter(stage); %iterate
 
     Q1 = 1/length(sampErr)*sum((comp1(sampErr)-stage(1).imf(sampErr)).^2);
     Q2 = 1/length(sampErr)*sum((comp2(sampErr)-stage(2).imf(sampErr)).^2);
