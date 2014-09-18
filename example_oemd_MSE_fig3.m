@@ -43,21 +43,22 @@ Q4 = 1/length(sampErr)*sum((trend(sampErr)-imf(4,sampErr)).^2);
 
 mse_rilling = Q1+Q2+Q3+Q4;
 
-
- imf = emd_local(x);
-% make sure we have only 3 IMFs and one residual
-if size(imf,1) > 4
-       imf(4,:) = sum(imf(4:end,:));
-end
-
-Q1 = 1/length(sampErr)*sum((comp1(sampErr)-imf(1,sampErr)).^2);
-Q2 = 1/length(sampErr)*sum((comp2(sampErr)-imf(2,sampErr)).^2);
-Q3 = 1/length(sampErr)*sum((comp3(sampErr)-imf(3,sampErr)).^2);
-Q4 = 1/length(sampErr)*sum((trend(sampErr)-imf(4,sampErr)).^2);
-
-mse_local = Q1+Q2+Q3+Q4;
-
-['Error for local EMD: ' num2str(mse_local)]
+% 
+%  imf = emd_local(x);
+% % make sure we have only 3 IMFs and one residual
+% size(imf,1)
+% if size(imf,1) > 4
+%        imf(4,:) = sum(imf(4:end,:));
+% end
+% 
+% Q1 = 1/length(sampErr)*sum((comp1(sampErr)-imf(1,sampErr)).^2);
+% Q2 = 1/length(sampErr)*sum((comp2(sampErr)-imf(2,sampErr)).^2);
+% Q3 = 1/length(sampErr)*sum((comp3(sampErr)-imf(3,sampErr)).^2);
+% Q4 = 1/length(sampErr)*sum((trend(sampErr)-imf(4,sampErr)).^2);
+% 
+% mse_local = Q1+Q2+Q3+Q4;
+% 
+% ['Error for local EMD: ' num2str(mse_local)]
 
 
 %% EMD online with Rilling stopping criterion
