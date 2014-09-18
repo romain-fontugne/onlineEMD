@@ -41,28 +41,23 @@ Q2 = 1/length(sampErr)*sum((comp2(sampErr)-imf(2,sampErr)).^2);
 Q3 = 1/length(sampErr)*sum((comp3(sampErr)-imf(3,sampErr)).^2);
 Q4 = 1/length(sampErr)*sum((trend(sampErr)-imf(4,sampErr)).^2);
 
-errEMD1 = (comp1(sampErr)-imf(1,sampErr)).^2;
-errEMD2 = (comp2(sampErr)-imf(2,sampErr)).^2;
-errEMD3 = (comp3(sampErr)-imf(3,sampErr)).^2;
-    
-
 mse_rilling = Q1+Q2+Q3+Q4;
 
-%%%% From corwin:
-%% imf = emd_local(x);
-%%% make sure we have only 3 IMFs and one residual
-%%if size(imf,1) > 4
-%%       imf(4,:) = sum(imf(4:end,:));
-%%     end
 
+ imf = emd_local(x);
+% make sure we have only 3 IMFs and one residual
+if size(imf,1) > 4
+       imf(4,:) = sum(imf(4:end,:));
+end
 
-% imf = emdc_fix([],x,5,3);
-% Q1 = 1/length(sampErr)*sum((comp1(sampErr)-imf(1,sampErr)).^2);
-% Q2 = 1/length(sampErr)*sum((comp2(sampErr)-imf(2,sampErr)).^2);
-% Q3 = 1/length(sampErr)*sum((comp3(sampErr)-imf(3,sampErr)).^2);
-% Q4 = 1/length(sampErr)*sum((trend(sampErr)-imf(4,sampErr)).^2);
-% 
-% mse_local = Q1+Q2+Q3+Q4;
+Q1 = 1/length(sampErr)*sum((comp1(sampErr)-imf(1,sampErr)).^2);
+Q2 = 1/length(sampErr)*sum((comp2(sampErr)-imf(2,sampErr)).^2);
+Q3 = 1/length(sampErr)*sum((comp3(sampErr)-imf(3,sampErr)).^2);
+Q4 = 1/length(sampErr)*sum((trend(sampErr)-imf(4,sampErr)).^2);
+
+mse_local = Q1+Q2+Q3+Q4;
+
+['Error for local EMD: ' num2str(mse_local)]
 
 
 %% EMD online with Rilling stopping criterion
@@ -81,12 +76,6 @@ for nbExtrema = nbExtremaList
     Q4 = 1/length(sampErr)*sum((trend(sampErr)-stage(4).data(sampErr)).^2);
 
     mse0(run) = Q1+Q2+Q3+Q4;
-    
-    if nbExtrema == 12
-        errOEMD1 = (comp1(sampErr)-stage(1).imf(sampErr)).^2;
-        errOEMD2 = (comp2(sampErr)-stage(2).imf(sampErr)).^2;
-        errOEMD3 = (comp3(sampErr)-stage(3).imf(sampErr)).^2;
-    end
     
     run = run+1;
 
