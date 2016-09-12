@@ -1,5 +1,5 @@
 function [stream] = oemd_iter(stream)
-%OCEEMDAN_ITER 
+%OEMD_ITER 
 
 bound = 3;
 nbExtrema = stream(1).nbExtrema;
@@ -18,15 +18,15 @@ if maxIMF==0 || (length(extrInd) < nbExtrema) %Not enough extrema to extract IMF
     return
 end
 
-%[stop_sift,moyenne,s] = stop_sifting(stream(1).data(stream(1).windowTail:end),[1:max(size(stream(1).data(stream(1).windowTail:end)))],0.05,0.5,0.05,'spline',0,4);
-
 while length(extrInd) >= nbExtrema %Enough data to compute the corresponding IMFs
     
     if stream(1).windowTail ~= 1 && extrInd(1) ~= stream(1).windowTail+1  %needed to fix issues with extr function
         extrInd = [stream(1).windowTail+1 extrInd];
     end
     
+   
     newWindowHead=extrInd(nbExtrema);
+
     
     switch stream(1).emdAlgo
         case 0
@@ -38,17 +38,13 @@ while length(extrInd) >= nbExtrema %Enough data to compute the corresponding IMF
         case 2
             % Confidence limit stopping criteria (Matlab code)
             [acumIMF] = emd(stream(1).data(stream(1).windowTail:newWindowHead+1),'MAXMODES',1,'FIX_H',4);
-%             [acumIMF] = emd(stream(1).data(stream(1).windowTail:newWindowHead+1),'MAXMODES',1,'STOP',[0.05,0.5,0.05]);
         otherwise
             error('EMD function unknown')
-%         [acumIMF]=emd(stream(1).data(stream(1).windowTail:newWindowHead+1),'MAXMODES',1);
-%          [acumIMF]=emd(stream(1).data(stream(1).windowTail:newWindowHead+1),'MAXMODES',1,'FIX',5);
-%             
+           
     end
 
     %Store the computed mean IMF
     prevWindowHead = stream(1).windowHead;
-%     sigma = 1;%((nbExtrema-1)/6)-(1/3);
     if stream(1).windowTail ~= 1
         ind = zeros(1,length(extrInd(1)-stream(1).windowTail:extrInd(nbExtrema)-stream(1).windowTail)); 
         lastExtrema = (1:nbExtrema-1)+1-(nbExtrema+1)/2;
@@ -92,7 +88,6 @@ while length(extrInd) >= nbExtrema %Enough data to compute the corresponding IMF
     
     %Store the residual
     nextWindowTail = extrInd(2)-1;
-%     nextWindowTail = extrInd(nbExtrema/2)-1; % Try to move faster the window
     if stream(1).windowTail ~= 1
         residualTail = stream(1).data(stream(1).windowTail+1:nextWindowTail)-stream(1).imf(stream(1).windowTail+1:nextWindowTail);
     else
