@@ -16,4 +16,4 @@
 
 ### Who do I talk to? ###
 
-* Romain Fontugne (http://romain.fontugne.free.fr)
+* Romain Fontugne (romain (at) iij.ad.jp)
