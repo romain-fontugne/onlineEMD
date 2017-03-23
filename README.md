@@ -3,7 +3,7 @@
 
 ### What is this repository for? ###
 
-* This is the MATLAB implementation of Online EMD
+* This is the MATLAB implementation of Online Empirical Mode Decomposition
 * The algorithm is introduced in our [ICASSP'17 paper](http://www.iij-ii.co.jp/en/lab/researchers/romain/papers/romain_icassp2017.pdf)
 * Version 0.1
 
