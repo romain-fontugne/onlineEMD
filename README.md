@@ -17,7 +17,7 @@
 
 ### Citation policy ###
 
-* If you publish material based on this code, please refer to our ICASSP'17 paper:
+If you publish material based on this code, please cite our ICASSP'17 paper:
 ```
 @INPROCEEDINGS{romain:icassp17, 
 author={R. Fontugne and P. Borgnat and P. Flandrin}, 
@@ -29,4 +29,4 @@ month={March},}
 
 ### Who do I talk to? ###
 
-* Romain Fontugne (romain (at) iij.ad.jp)
+Romain Fontugne (romain (at) iij.ad.jp)
