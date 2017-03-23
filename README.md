@@ -24,7 +24,8 @@ author={R. Fontugne and P. Borgnat and P. Flandrin},
 booktitle={2017 IEEE International Conference on Acoustics, Speech and Signal Processing}, 
 title={Online Empirical Mode Decomposition}, 
 year={2017}, 
-month={March},}
+month={March},
+location = {New Orleans, LA, USA},}
 ```
 
 ### Who do I talk to? ###
